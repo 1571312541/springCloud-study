@@ -13,12 +13,11 @@ import org.springframework.cloud.netflix.ribbon.RibbonClient;
  * @author 22902
  * @create 2019/1/7
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"cn.zcclj.springcloud"}) //主要扫描DeptClientService，feign接口
 @EnableEurekaClient
 //在启动该微服务的时候加载自定义的ribbon配置类，使用自定义的负载均衡算法
 @RibbonClient(name = "ZCHAO-SPRINGCLOUD-DEPT",configuration = MyselfRule.class)
 @EnableFeignClients(basePackages = {"cn.zcclj.springcloud"})
-//@ComponentScan("cn.zcclj.springcloud") //可以不用这个注解，因为会跟SpringBootApplication中重复，可以在DeptClientService类中加@Component
 public class DeptConsumer_feign_80_App {
 
     public static void main(String[] args) {

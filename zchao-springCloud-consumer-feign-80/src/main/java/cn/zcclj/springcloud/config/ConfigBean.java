@@ -25,7 +25,7 @@ public class ConfigBean {
     /**
      * 以随机模式代替默认的轮询模式
      * 当在启动类中加入@RibbonClient(name = "ZCHAO-SPRINGCLOUD-DEPT",configuration = MyselfRule.class)时，
-     * 将不使用该模式
+     * 将不使用该模式，会使用自定义的算法
      * @return IRule
      */
     @Bean

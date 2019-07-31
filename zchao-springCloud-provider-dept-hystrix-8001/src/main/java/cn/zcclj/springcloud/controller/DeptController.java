@@ -2,6 +2,7 @@ package cn.zcclj.springcloud.controller;
 
 import cn.zcclj.springcloud.entity.Dept;
 import cn.zcclj.springcloud.service.DeptService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,10 +36,21 @@ public class DeptController {
     public boolean addDept(Dept dept){
         return deptService.addDept(dept);
     }
+
     @RequestMapping(value = "/get/{id}",method = RequestMethod.GET)
+    @HystrixCommand(fallbackMethod = "findById_hystrix")
     public Dept findById(@PathVariable("id") Long id){
-        return deptService.findById(id);
+        Dept dept = deptService.findById(id);
+        if(null != dept){
+            return dept;
+        }
+        throw new RuntimeException("id为"+id+"没有对应信息");
     }
+
+    public Dept findById_hystrix(Long id){
+        return new Dept(id," @HystrixCommand(fallbackMethod = \"findById_hystrix\")","no data");
+    }
+
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public List<Dept> findAll(){
         return deptService.findAll();

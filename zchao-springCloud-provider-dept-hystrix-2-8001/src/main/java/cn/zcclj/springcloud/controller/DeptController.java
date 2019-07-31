@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -35,10 +36,18 @@ public class DeptController {
     public boolean addDept(Dept dept){
         return deptService.addDept(dept);
     }
+
     @RequestMapping(value = "/get/{id}",method = RequestMethod.GET)
+
     public Dept findById(@PathVariable("id") Long id){
-        return deptService.findById(id);
+        Dept dept = deptService.findById(id);
+        if(null == dept){
+            //自定义一个异常抛出，以便使用服务降级
+            throw new RuntimeException("id为"+id+"没有对应信息");
+        }
+        return dept;
     }
+
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public List<Dept> findAll(){
         return deptService.findAll();

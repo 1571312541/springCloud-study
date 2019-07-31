@@ -12,6 +12,7 @@
         <module>zchao-springCloud-provider-dept-8001</module>
         <module>zchao-springCloud-consumer-80</module>
         <module>zchao2-springCloud-eureka-7001</module>
+        <module>zchao-springCloud-consumer-hystrix-dashboard-9001</module>
     </modules>
     <packaging>pom</packaging>
 
